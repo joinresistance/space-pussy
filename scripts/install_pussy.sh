@@ -18,20 +18,21 @@ case "$PLATFORM" in
   "Darwin"|"Linux")
     wget https://github.com/greatweb/space-pussy/archive/refs/tags/$latest_tag.zip
     unzip $latest_tag.zip
-    cd space-pussy-$latest_tag/
+    cd space-pussy-${latest_tag#v}
     make build
     for binpath in $binpaths; do
       if cp build/pussy "$binpath"; then
         echo "Moved pussy to $binpath"
         echo "Enjoy your space-pussy experience!"
-        rm ~/space-pussy-$latest_tag.zip
-        rm -rf ~/space-pussy-$latest_tag
+        rm ~/$latest_tag.zip
+        rm -rf ~/space-pussy-${latest_tag#v}
+        pussy --help
         exit 0
       else
         if [ -d "$binpath" ] && [ ! -w "$binpath" ]; then
           is_write_perm_missing=1
-          rm ~/space-pussy-$latest_tag.zip
-          rm -rf ~/space-pussy-$latest_tag
+          rm ~$latest_tag.zip
+          rm -rf ~/space-pussy-${latest_tag#v}
         fi
       fi
     done
